@@ -1,5 +1,3 @@
-Using the data provided, we would like you to answer the following 4 questions which requires calculating some statistics from the data. The output for each of the questions can either be provided as 4 files or the code can simply output the results to the console.
-
 
 Question 1
 Find the total number of flights for each month.
