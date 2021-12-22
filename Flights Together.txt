@@ -1,0 +1,11 @@
+val df = Seq().toDF("passengerId1","passengerId2", "NumberOfFlightsTogether")
+
+df.as("df1").join(df.as("df2"),
+    $"df1.passengerId1" < $"df2.passengerId1" &&
+	$"df1.passengerId12" < $"df2.passengerId12"
+    $"df1.NumberOfFlightsTogether" === $"df2.NumberOfFlightsTogether",
+    "inner"
+  ).
+  groupBy($"df1.passengerId1", $"df2.passengerId2").
+  agg(count("*").as("NumberOfFlightsTogether")).
+  where($"flightsTogether" >= 3).

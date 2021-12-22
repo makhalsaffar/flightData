@@ -1,0 +1,18 @@
+def longestRun(sq: Seq[String]): Int = {
+    sq.mkString(" ")
+      .split("UK")
+      .filter(_.nonEmpty)
+      .map(_.trim)
+      .map(s => s.split(" ").length)
+      .max
+  }
+
+  case class Flights(passengerID: Int, longestRun: Int)
+
+   import spark.implicits._
+
+    val df = sc.parallelize(data)
+      .toDF("passengerID", "longestRun")
+      .map(r => Flights(r(0).asInstanceOf[Int],r(1).asInstanceOf[Seq[String]],longestRun(r(1).asInstanceOf[Seq[String]])))
+    
+    df.show(truncate = false)

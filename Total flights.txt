@@ -1,0 +1,43 @@
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkContext._
+import org.apache.spark.SparkConf
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.SQLContext
+
+object FlightNumber extends App {
+val sparkConf = new SparkConf().setAppName("FlightNumber").
+setMaster("local[2]") //set spark configuration
+
+val sparkContext = new SparkContext(sparkConf) // make spark context
+val sqlContext = new SQLContext(sparkContext) // make sql context
+
+  val spark = SparkSession
+    .builder()
+    .master("local")
+    .appName("FlightNumberTotal")
+    .getOrCreate()
+
+val df1 = sqlContext.read
+    .format("com.databricks.spark.csv")
+    .option("header", "true")
+    .option("delimiter", "|")
+    .option("inferSchema", "true")
+    .load(""C:\Users\Mahmoud Alsaffar\Downloads\Quantexa\flightData.csv"")
+   
+   //df1: org.apache.spark.sql.DataFrame = [passengerId: int, flightId: int, from: string, to: string, date: int]
+   //df1.filter($"date" >= lit('2017-01-01') && $"date" <= lit('2017-12-31'))
+
+    val df2 = sqlContext.read
+    .format("com.databricks.spark.csv")
+    .option("header", "true")
+    .option("delimiter", "|")
+    .option("inferSchema", "true")
+    .load("C:/Users/Gerard/Documents/passengers.csv")
+
+  df1.show()
+  
+  //val PassID = df1.select("passengerId")
+  
+  val totalflightNum = spark.sql("SELECT * FROM df1 WHERE date>= '2017-01-01' & date<='2017-12-31'")
+  totalflightNum.collect.foreach(println)
+}'''

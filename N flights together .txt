@@ -1,0 +1,13 @@
+val df = Seq().toDF("passengerId1", "passengerId2", "NumberOfFlightTogether", "date")
+
+df.as("df1").join(df.as("df2"),
+    $"df1.passengerId1" < $"df2.passengerId1" &&
+	$"df1.passengerId2" < $"df2.passengerId2" &&
+    $"df1.NumberOfFlightTogether" === $"df2.NumberOfFlightTogether" &&
+    $"df1.date" === $"df2.date",
+    "inner"
+  ).
+  groupBy($"df1.passengerId1", $"df2.passengerId1").
+  agg(count("*").as("NumberOfFlightTogether"), min($"df1.date").as("from"), max($"df1.date").as("to")).
+  where($"NumberOfFlightTogether" >= NumberOfFlightTogether).
+  show()

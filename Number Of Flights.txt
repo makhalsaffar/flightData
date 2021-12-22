@@ -1,0 +1,17 @@
+
+import spark.implicits._
+val dfFrom df1 = data.toDF("passengerId", "NumberOfFlights", "FirstName", "LastName") 
+
+
+df.as("df1").join(df.as("df2"),
+    $"df1.passengerId" < $"df2.passengerId" &&
+    $"df1.NumberOfFlights" === $"df2.NumberOfFlights" &&
+    $"df1.FirstName" === $"df2.FirstName" &&
+    $"df1.LastName" === $"df2.LastName",
+    "inner"
+  ).
+  groupBy($"df1.passengerId", $"df2.passengerId").
+  agg(count("*").as("NumberOfFlights")).
+  where($"NumberOfFlights" >= 100).
+  
+  
